@@ -37,7 +37,7 @@ def AgeGroupMarkup():
 def DirectionMarkup():
     markup = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
 
-    intel_button = KeyboardButton("🎓Интелектуальная")
+    intel_button = KeyboardButton("🎓Интеллектуальная")
     sport_button = KeyboardButton("🥋Спортивная")
     art_button = KeyboardButton("🎨Творческая")
     cancel_button = KeyboardButton("🚫Отмена заявки🚫")

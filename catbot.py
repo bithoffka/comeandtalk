@@ -9,6 +9,7 @@ from markups import *
 
 token = "6100825136:AAHwtNxu-kaHE2K2aGuslJEclVSZPtyRtm8"
 #Test token - 6100825136:AAHwtNxu-kaHE2K2aGuslJEclVSZPtyRtm8
+#Cat bot token - 6509194424:AAGnHAw_eNFre4Y8KlRvIOs_PGOJbNaPg3w
 
 bot = Bot(token)
 dp = Dispatcher(bot, storage=MemoryStorage())
@@ -106,7 +107,7 @@ async def fsm_direction_handler(message: types.Message, state: FSMContext):
 	LogMessage(message)
 
 	async with state.proxy() as data:
-		if message.text == "🎓Интелектуальная" or message.text == "🥋Спортивная" or message.text == "🎨Творческая":
+		if message.text == "🎓Интеллектуальная" or message.text == "🥋Спортивная" or message.text == "🎨Творческая":
 			data["direction"] = message.text
 
 			age_group = data["age_group"]
@@ -115,21 +116,21 @@ async def fsm_direction_handler(message: types.Message, state: FSMContext):
 			next_markup = None
 
 			if age_group == "👶Дети (4-7 лет)":
-				if direction == "🎓Интелектуальная":
+				if direction == "🎓Интеллектуальная":
 					next_markup = KidsIntel()
 				elif direction == "🥋Спортивная":
 					next_markup = KidsSport()
 				elif direction == "🎨Творческая":
 					next_markup = KidsArt()
 			elif age_group == "👱Подростки (7-18 лет)":
-				if direction == "🎓Интелектуальная":
+				if direction == "🎓Интеллектуальная":
 					next_markup = TeensIntel()
 				elif direction == "🥋Спортивная":
 					next_markup = TeensSport()
 				elif direction == "🎨Творческая":
 					next_markup = TeensArt()
 			elif age_group == "🧔‍♂️Взрослые (18-81 лет)":
-				if direction == "🎓Интелектуальная":
+				if direction == "🎓Интеллектуальная":
 					next_markup = AdultsIntel()
 				elif direction == "🥋Спортивная":
 					next_markup = AdultsSport()
