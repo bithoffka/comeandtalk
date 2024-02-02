@@ -66,7 +66,7 @@ async def help(message: types.Message):
 	if ChatTypePrivate(message):	
 		LogMessage(message)
 
-		await message.reply("🛠Помощь🛠\n\n/start - Перезапустить бота\n/signup - Записаться на занятие в нашем центре\n/sched - Раписание работы наших центров\n/info - Информация о нашей организации\n/help - Помощь")
+		await message.reply("🛠Помощь🛠\n\n/start - Перезапустить бота\n/account - Просмотреть свой личный кабинет\n/signup - Записаться на занятие в нашем центре\n/sched - Раписание работы наших центров\n/info - Информация о нашей организации\n/help - Помощь")
 	else:
 		await message.reply("Бот не работает в группах, перейдите в приватный чат")
 
@@ -86,7 +86,10 @@ async def signup(message: types.Message):
 
 @dp.message_handler(commands="account")
 async def account(message: types.Message):
-	await message.answer("Тут должен быть личный кабинет")
+	if ChatTypePrivate(message):
+		LogMessage(message)
+
+		await message.answer("Тут должен быть личный кабинет")
 
 #FSM HANDLERS START
 
