@@ -1,13 +1,13 @@
 import logging
 from aiogram import types, Bot, Dispatcher, executor
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.dispatcher import FSMContext
 from markups import *
+from catid_generator import *
 
-token = "6100825136:AAHwtNxu-kaHE2K2aGuslJEclVSZPtyRtm8"
+token = "6509194424:AAGnHAw_eNFre4Y8KlRvIOs_PGOJbNaPg3w"
 #Test token - 6100825136:AAHwtNxu-kaHE2K2aGuslJEclVSZPtyRtm8
 #Cat bot token - 6509194424:AAGnHAw_eNFre4Y8KlRvIOs_PGOJbNaPg3w
 
@@ -16,7 +16,7 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 
 logging.basicConfig(level=logging.INFO)
 
-manager_id = "1440788864"
+manager_list = ["1440788864", "1184685120"]
 
 class ApplicationStatesGroup(StatesGroup):
 	age_group = State()
@@ -31,7 +31,7 @@ def ChatTypePrivate(message): return message.chat.type == "private"
 
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
-	if ChatTypePrivate(message) == True:
+	if ChatTypePrivate(message):
 		LogMessage(message)
 
 		markup_privacy = InlineKeyboardMarkup()
@@ -44,7 +44,7 @@ async def start(message: types.Message):
 
 @dp.message_handler(commands="sched")
 async def sched(message: types.Message):
-	if ChatTypePrivate(message) == True:
+	if ChatTypePrivate(message):
 		LogMessage(message)
 
 		await message.reply("⏰Часы работы всех наших центров развития⏰:\n\n📍 г.Михайловск, ул.Ленина, 111\n\n⏱ пн - 09:00–19:00\n⏱ вт - 09:00–19:00\n⏱ ср - 09:00–19:00\n⏱ чт - 09:00–19:00\n⏱ пт - 09:00–19:00\n⏱ сб - 09:00–19:00\n⏱ вс - 09:00–15:00\n\n📍 г.Михайловск, ул.Георгиевская,107\n\n⏱ пн - 09:00–19:00\n⏱ вт - 09:00–19:00\n⏱ ср - 09:00–19:00\n⏱ чт - 09:00–19:00\n⏱ пт - 09:00–19:00\n⏱ сб - 09:00–19:00\n⏱ вс - 09:00–15:00\n\n☎️ Номер телефона: 61-09-90, +7-(962)-451-09-90")
@@ -53,7 +53,7 @@ async def sched(message: types.Message):
 
 @dp.message_handler(commands="info")
 async def info(message: types.Message):
-	if ChatTypePrivate(message) == True:	
+	if ChatTypePrivate(message):	
 		LogMessage(message)
 
 		await message.reply("ℹ️Информация\n\n📱Наш ВК: https://vk.com/comeandtalkk\n\n☎️ Номер телефона: 61-09-90, +7-(962)-451-09-90\n✉️ Почта: comeandtalk@yandex.ru\n🕸 Наш сайт: comeandtalk.ru")
@@ -63,7 +63,7 @@ async def info(message: types.Message):
 
 @dp.message_handler(commands="help")
 async def help(message: types.Message):
-	if ChatTypePrivate(message) == True:	
+	if ChatTypePrivate(message):	
 		LogMessage(message)
 
 		await message.reply("🛠Помощь🛠\n\n/start - Перезапустить бота\n/signup - Записаться на занятие в нашем центре\n/sched - Раписание работы наших центров\n/info - Информация о нашей организации\n/help - Помощь")
@@ -72,7 +72,7 @@ async def help(message: types.Message):
 
 @dp.message_handler(commands="signup")
 async def signup(message: types.Message):
-	if ChatTypePrivate(message) == True:	
+	if ChatTypePrivate(message):	
 		LogMessage(message)
 
 		markup = InlineKeyboardMarkup()
@@ -83,6 +83,10 @@ async def signup(message: types.Message):
 		await ApplicationStatesGroup.age_group.set()
 	else:
 		await message.reply("Бот не работает в группах, перейдите в приватный чат")
+
+@dp.message_handler(commands="account")
+async def account(message: types.Message):
+	await message.answer("Тут должен быть личный кабинет")
 
 #FSM HANDLERS START
 
@@ -168,8 +172,18 @@ async def fsm_phone_number_handler(message: types.Message, state: FSMContext):
 	async with state.proxy() as data:
 		data["phone_number"] = message.contact.phone_number
 
-		await bot.send_message(manager_id, f'Заявка на регистрацию!\nID: {message.chat.id}\nUsername: {message.from_user.first_name}\nВозрастная категория: {data["age_group"]}\nПрограмма: {data["direction"]}\nТип занятий: {data["class_type"]}\nКонтакт: {data["phone_number"]}')
-
+		for i in manager_list:
+			await bot.send_message(i, f'Заявка на регистрацию!\nID: {message.chat.id}\nUsername: {message.from_user.first_name}\nВозрастная категория: {data["age_group"]}\nПрограмма: {data["direction"]}\nТип занятий: {data["class_type"]}\nКонтакт: {data["phone_number"]}')
+		
+		data_dictionary = {
+				"TID": message.chat.id,
+			    "TNAME": message.from_user.first_name,
+				"age_group": data["age_group"],
+				"direction": data["direction"],
+				"class_type": data["class_type"],
+				"phone_number": message.contact.phone_number
+			}
+		
 	await message.reply("✅Готово, ваша заявка отправлена менеджеру, мы свяжемся с вами в ближайшее время!", reply_markup=MainMarkup())
 	await state.finish()
 
@@ -177,7 +191,7 @@ async def fsm_phone_number_handler(message: types.Message, state: FSMContext):
 
 @dp.message_handler()
 async def handler(message: types.Message):
-	if ChatTypePrivate(message) == True:
+	if ChatTypePrivate(message):
 		text = message.text.strip()
 
 		if text == "🕰️График работы🕰️":
@@ -190,6 +204,8 @@ async def handler(message: types.Message):
 			await info(message)
 		elif text == "🛠Помощь🛠":
 			await help(message)
+		elif text == "📰Личный кабинет📰":
+			await account(message)
 		else:
 			LogMessage(message)
 			await message.answer("Ваша команда не распознана, напишите /help для помощи, или нажмите кнопку \"Помощь\" внизу!")
