@@ -6,12 +6,13 @@ def MainMarkup():
     start_button = KeyboardButton("🔄Перезапустить бота🔄")
     signup_button = KeyboardButton("📑Записаться на занятие📑")
     sched_button = KeyboardButton("🕰️График работы🕰️")
+    account_button = KeyboardButton("📰Личный кабинет📰")
     info_button = KeyboardButton("ℹ️Информацияℹ️")
     help_button = KeyboardButton("🛠Помощь🛠")
 
     markup.add(start_button)
     markup.add(signup_button)
-    markup.add(sched_button)
+    markup.add(sched_button, account_button)
     markup.add(info_button, help_button)
 
     return markup
@@ -37,7 +38,7 @@ def AgeGroupMarkup():
 def DirectionMarkup():
     markup = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
 
-    intel_button = KeyboardButton("🎓Интелектуальная")
+    intel_button = KeyboardButton("🎓Интеллектуальная")
     sport_button = KeyboardButton("🥋Спортивная")
     art_button = KeyboardButton("🎨Творческая")
     cancel_button = KeyboardButton("🚫Отмена заявки🚫")
