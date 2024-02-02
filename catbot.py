@@ -5,6 +5,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.dispatcher import FSMContext
 from markups import *
+from catid_generator import *
 
 token = "6509194424:AAGnHAw_eNFre4Y8KlRvIOs_PGOJbNaPg3w"
 #Test token - 6100825136:AAHwtNxu-kaHE2K2aGuslJEclVSZPtyRtm8
@@ -15,7 +16,7 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 
 logging.basicConfig(level=logging.INFO)
 
-manager_id = "1440788864"
+manager_list = ["1440788864", "1184685120"]
 
 class ApplicationStatesGroup(StatesGroup):
 	age_group = State()
@@ -52,7 +53,7 @@ async def sched(message: types.Message):
 
 @dp.message_handler(commands="info")
 async def info(message: types.Message):
-	if ChatTypePrivate(message):
+	if ChatTypePrivate(message):	
 		LogMessage(message)
 
 		await message.reply("ℹ️Информация\n\n📱Наш ВК: https://vk.com/comeandtalkk\n\n☎️ Номер телефона: 61-09-90, +7-(962)-451-09-90\n✉️ Почта: comeandtalk@yandex.ru\n🕸 Наш сайт: comeandtalk.ru")
@@ -62,16 +63,16 @@ async def info(message: types.Message):
 
 @dp.message_handler(commands="help")
 async def help(message: types.Message):
-	if ChatTypePrivate(message):
+	if ChatTypePrivate(message):	
 		LogMessage(message)
 
-		await message.reply("🛠Помощь🛠\n\n/start - Перезапустить бота\n/account - Просмотреть свой личный кабинет\n/signup - Записаться на занятие в нашем центре\n/sched - Раписание работы наших центров\n/info - Информация о нашей организации\n/help - Помощь")
+		await message.reply("🛠Помощь🛠\n\n/start - Перезапустить бота\n/signup - Записаться на занятие в нашем центре\n/sched - Раписание работы наших центров\n/info - Информация о нашей организации\n/help - Помощь")
 	else:
 		await message.reply("Бот не работает в группах, перейдите в приватный чат")
 
 @dp.message_handler(commands="signup")
 async def signup(message: types.Message):
-	if ChatTypePrivate(message):
+	if ChatTypePrivate(message):	
 		LogMessage(message)
 
 		markup = InlineKeyboardMarkup()
@@ -85,11 +86,7 @@ async def signup(message: types.Message):
 
 @dp.message_handler(commands="account")
 async def account(message: types.Message):
-	if ChatTypePrivate(message):
-		await message.reply("Вы зашли в свой личный кабинет!")
-		# тут ты делаешь то что я тебе сказал
-	else:
-		await message.reply("Бот не работает в группах, перейдите в приватный чат")
+	await message.answer("Тут должен быть личный кабинет")
 
 #FSM HANDLERS START
 
@@ -175,8 +172,18 @@ async def fsm_phone_number_handler(message: types.Message, state: FSMContext):
 	async with state.proxy() as data:
 		data["phone_number"] = message.contact.phone_number
 
-		await bot.send_message(manager_id, f'Заявка на регистрацию!\nID: {message.chat.id}\nUsername: {message.from_user.first_name}\nВозрастная категория: {data["age_group"]}\nПрограмма: {data["direction"]}\nТип занятий: {data["class_type"]}\nКонтакт: {data["phone_number"]}')
-
+		for i in manager_list:
+			await bot.send_message(i, f'Заявка на регистрацию!\nID: {message.chat.id}\nUsername: {message.from_user.first_name}\nВозрастная категория: {data["age_group"]}\nПрограмма: {data["direction"]}\nТип занятий: {data["class_type"]}\nКонтакт: {data["phone_number"]}')
+		
+		data_dictionary = {
+				"TID": message.chat.id,
+			    "TNAME": message.from_user.first_name,
+				"age_group": data["age_group"],
+				"direction": data["direction"],
+				"class_type": data["class_type"],
+				"phone_number": message.contact.phone_number
+			}
+		
 	await message.reply("✅Готово, ваша заявка отправлена менеджеру, мы свяжемся с вами в ближайшее время!", reply_markup=MainMarkup())
 	await state.finish()
 
