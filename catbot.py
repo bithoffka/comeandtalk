@@ -7,7 +7,7 @@ from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.dispatcher import FSMContext
 from markups import *
 
-token = "6100825136:AAHwtNxu-kaHE2K2aGuslJEclVSZPtyRtm8"
+token = "6509194424:AAGnHAw_eNFre4Y8KlRvIOs_PGOJbNaPg3w"
 #Test token - 6100825136:AAHwtNxu-kaHE2K2aGuslJEclVSZPtyRtm8
 #Cat bot token - 6509194424:AAGnHAw_eNFre4Y8KlRvIOs_PGOJbNaPg3w
 
@@ -16,7 +16,7 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 
 logging.basicConfig(level=logging.INFO)
 
-manager_id = "1440788864"
+manager_list = ["1440788864", "5396781006"]
 
 class ApplicationStatesGroup(StatesGroup):
 	age_group = State()
@@ -31,29 +31,29 @@ def ChatTypePrivate(message): return message.chat.type == "private"
 
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
-	if ChatTypePrivate(message) == True:
+	if ChatTypePrivate(message):
 		LogMessage(message)
 
 		markup_privacy = InlineKeyboardMarkup()
 		markup_privacy.add(InlineKeyboardButton(text="Политика Конфиденциальности", url="https://jazzy-dasik-1615a8.netlify.app/"))
 
-		await message.reply(f"Привет, {message.from_user.first_name}!\n🇬🇧Это бот Come & Talk🇪🇸\n\nЭтот бот поможет вам:\n🔰 Назначить урок\n🔰 Связаться с менеджером\n🔰 Узнать график работы\n🔰 Быть в курсе последних новостей\n🔰 Подписаться на наши социальные сети\n\nИ многое другое✅️\n\nℹ️Для списка команд выберите \"Помощь\" в меню\n\nℹ️Пользуясь ботом, вы соглашаетесь с Политикой Конфиденциальности, прочитать которую можно по кнопке ниже.", reply_markup=MainMarkup())
+		await message.reply(f"Привет, {message.from_user.first_name}! Я бот-помощник Центра развивающего обучения «Come And Talk»🐱\n\nЯ могу:\n📒Записать на пробное занятие\n🧾 Прислать реквизиты для оплаты \n🧮Показать сколько осталось занятий в абонементе \n🗓️Ознакомить с графиком работы Центров \n☎️Связать с менеджером\n🤓Рассказать анекдот \n\nℹ️ Для списка команд нажмите на кнопку \"Помощь\" в меню\n\nℹ️ Пользуясь ботом, Вы соглашаетесь с Политикой Конфиденциальности, ознакомиться с ней можно, нажав на кнопку ниже", reply_markup=MainMarkup())
 		await message.answer("↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓", reply_markup=markup_privacy)
 	else:
 		await message.reply("Бот не работает в группах, перейдите в приватный чат")
 
 @dp.message_handler(commands="sched")
 async def sched(message: types.Message):
-	if ChatTypePrivate(message) == True:
+	if ChatTypePrivate(message):
 		LogMessage(message)
 
-		await message.reply("⏰Часы работы всех наших центров развития⏰:\n\n📍 г.Михайловск, ул.Ленина, 111\n\n⏱ пн - 09:00–19:00\n⏱ вт - 09:00–19:00\n⏱ ср - 09:00–19:00\n⏱ чт - 09:00–19:00\n⏱ пт - 09:00–19:00\n⏱ сб - 09:00–19:00\n⏱ вс - 09:00–15:00\n\n📍 г.Михайловск, ул.Георгиевская,107\n\n⏱ пн - 09:00–19:00\n⏱ вт - 09:00–19:00\n⏱ ср - 09:00–19:00\n⏱ чт - 09:00–19:00\n⏱ пт - 09:00–19:00\n⏱ сб - 09:00–19:00\n⏱ вс - 09:00–15:00\n\n☎️ Номер телефона: 61-09-90, +7-(962)-451-09-90")
+		await message.reply("⏰Часы работы действующих Центров “COME AND TALK”:\n\n📍 г.Михайловск, ул.Ленина, 111\n\n⏱ пн - 09:00–19:00\n⏱ вт - 09:00–19:00\n⏱ ср - 09:00–19:00\n⏱ чт - 09:00–19:00\n⏱ пт - 09:00–19:00\n⏱ сб - 09:00–19:00\n⏱ вс - 09:00–15:00\n\n📍 г.Михайловск, ул.Георгиевская,107\n\n⏱ пн - 09:00–19:00\n⏱ вт - 09:00–19:00\n⏱ ср - 09:00–19:00\n⏱ чт - 09:00–19:00\n⏱ пт - 09:00–19:00\n⏱ сб - 09:00–19:00\n⏱ вс - 09:00–15:00\n\n☎️ Номер телефона: 61-09-90\n📮 WhatsApp: wa.me/79624510990")
 	else:
 		await message.reply("Бот не работает в группах, перейдите в приватный чат")
 
 @dp.message_handler(commands="info")
 async def info(message: types.Message):
-	if ChatTypePrivate(message) == True:	
+	if ChatTypePrivate(message):	
 		LogMessage(message)
 
 		await message.reply("ℹ️Информация\n\n📱Наш ВК: https://vk.com/comeandtalkk\n\n☎️ Номер телефона: 61-09-90, +7-(962)-451-09-90\n✉️ Почта: comeandtalk@yandex.ru\n🕸 Наш сайт: comeandtalk.ru")
@@ -63,7 +63,7 @@ async def info(message: types.Message):
 
 @dp.message_handler(commands="help")
 async def help(message: types.Message):
-	if ChatTypePrivate(message) == True:	
+	if ChatTypePrivate(message):	
 		LogMessage(message)
 
 		await message.reply("🛠Помощь🛠\n\n/start - Перезапустить бота\n/signup - Записаться на занятие в нашем центре\n/sched - Раписание работы наших центров\n/info - Информация о нашей организации\n/help - Помощь")
@@ -72,14 +72,14 @@ async def help(message: types.Message):
 
 @dp.message_handler(commands="signup")
 async def signup(message: types.Message):
-	if ChatTypePrivate(message) == True:	
+	if ChatTypePrivate(message):	
 		LogMessage(message)
 
 		markup = InlineKeyboardMarkup()
-		markup.add(InlineKeyboardButton("Наш веб-сайт", url="https://comeandtalk.ru"))
-		await message.reply("📑Перед тем, как записаться, ознакомьтесь с программами обучения по кнопке снизу", reply_markup=markup)
+		markup.add(InlineKeyboardButton("Перейти на сайт", url="https://comeandtalk.ru"))
+		await message.reply("📑Перед тем, как записаться, ознакомьтесь с программами ниже👇", reply_markup=markup)
 
-		await message.answer("🔰Выберите возраст🔰", reply_markup=AgeGroupMarkup())
+		await message.answer("Выберите возраст👇", reply_markup=AgeGroupMarkup())
 		await ApplicationStatesGroup.age_group.set()
 	else:
 		await message.reply("Бот не работает в группах, перейдите в приватный чат")
@@ -94,9 +94,9 @@ async def fsm_age_group_handler(message: types.Message, state: FSMContext):
 		if message.text == "👶Дети (4-7 лет)" or message.text == "👱Подростки (7-18 лет)" or message.text == "🧔‍♂️Взрослые (18-81 лет)":
 			data["age_group"] = message.text
 
-			await message.reply("🔰Выберите программу🔰", reply_markup=DirectionMarkup())
+			await message.reply("Выберите тип занятий👇", reply_markup=DirectionMarkup())
 			await ApplicationStatesGroup.next()
-		elif message.text == "🚫Отмена заявки🚫":
+		elif message.text == "🚫Отмена заявки":
 			await message.reply("❌Заявка отменена успешно!", reply_markup=MainMarkup())
 			await state.finish()
 		else:
@@ -137,9 +137,9 @@ async def fsm_direction_handler(message: types.Message, state: FSMContext):
 				elif direction == "🎨Творческая":
 					next_markup = AdultsArt()
 
-			await message.reply("🔰Выберите тип занятия🔰", reply_markup=next_markup)
+			await message.reply("Выберите направление👇", reply_markup=next_markup)
 			await ApplicationStatesGroup.next()
-		elif message.text == "🚫Отмена заявки🚫":
+		elif message.text == "🚫Отмена заявки":
 			await message.reply("❌Заявка отменена успешно!", reply_markup=MainMarkup())
 			await state.finish()
 		else:
@@ -153,9 +153,9 @@ async def fsm_class_type_handler(message: types.Message, state: FSMContext):
 		if message.text == "🇬🇧Английский язык" or message.text == "🔠Логопед" or message.text == "📚Подготовка к школе" or message.text == "💃Хореография" or message.text == "🧐Развитие" or message.text == "🔢Ментальная алгебра" or message.text == "📖Подготовка к ОГЭ/ЕГЭ/ВПР" or message.text == "🇦🇲Армянский язык" or message.text == "🇪🇸Испанский язык" or message.text == "🔊Хип-Хоп" or message.text == "🥋Карате" or message.text == "🎨Рисование" or message.text == "🎭Актерское мастерство" or message.text == "🖼Исскуствоведение" or message.text == "🇫🇷Французский язык" or message.text == "🎤Ораторское искуство" or message.text == "🖼Рисование" or message.text == "🧘Йога" or message.text == "💪Фитнес":
 			data["class_type"] = message.text
 
-			await message.reply("🔰Поделитесь контактом🔰", reply_markup=RequestContact())
+			await message.reply("☎️ Пришлите свой номер телефона и имя, чтобы мы смогли с Вами связаться\n\nНапишите \"Отмена\", если Вы передумали оставлять заявку😉", reply_markup=RequestContact())
 			await ApplicationStatesGroup.next()
-		elif message.text == "🚫Отмена заявки🚫":
+		elif message.text == "🚫Отмена заявки":
 			await message.reply("❌Заявка отменена успешно!", reply_markup=MainMarkup())
 			await state.finish()
 		else:
@@ -168,27 +168,28 @@ async def fsm_phone_number_handler(message: types.Message, state: FSMContext):
 	async with state.proxy() as data:
 		data["phone_number"] = message.contact.phone_number
 
-		await bot.send_message(manager_id, f'Заявка на регистрацию!\nID: {message.chat.id}\nUsername: {message.from_user.first_name}\nВозрастная категория: {data["age_group"]}\nПрограмма: {data["direction"]}\nТип занятий: {data["class_type"]}\nКонтакт: {data["phone_number"]}')
+		for i in manager_list:
+			await bot.send_message(i, f'Заявка на регистрацию!\nID: {message.chat.id}\nUsername: {message.from_user.first_name}\nВозрастная категория: {data["age_group"]}\nПрограмма: {data["direction"]}\nТип занятий: {data["class_type"]}\nКонтакт: {data["phone_number"]}')
 
-	await message.reply("✅Готово, ваша заявка отправлена менеджеру, мы свяжемся с вами в ближайшее время!", reply_markup=MainMarkup())
+	await message.reply("Готово✅\nВаша заявка отправлена менеджеру, мы свяжемся с Вами в ближайшее время!", reply_markup=MainMarkup())
 	await state.finish()
 
 #FSM HANDLERS END
 
 @dp.message_handler()
 async def handler(message: types.Message):
-	if ChatTypePrivate(message) == True:
+	if ChatTypePrivate(message):
 		text = message.text.strip()
 
-		if text == "🕰️График работы🕰️":
+		if text == "⏰График работы":
 			await sched(message)
-		elif text == "🔄Перезапустить бота🔄":
+		elif text == "🔄Перезапустить бота":
 			await start(message)
-		elif text == "📑Записаться на занятие📑":
+		elif text == "📑Записаться на занятие":
 			await signup(message)
-		elif text == "ℹ️Информацияℹ️":
+		elif text == "ℹ️Информация":
 			await info(message)
-		elif text == "🛠Помощь🛠":
+		elif text == "🛠Помощь":
 			await help(message)
 		else:
 			LogMessage(message)
