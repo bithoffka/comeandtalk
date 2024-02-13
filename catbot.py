@@ -6,6 +6,7 @@ from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.dispatcher import FSMContext
 from markups import *
 from catid_generator import *
+from TID_db_manager import *
 
 token = "6509194424:AAGnHAw_eNFre4Y8KlRvIOs_PGOJbNaPg3w"
 #Test token - 6100825136:AAHwtNxu-kaHE2K2aGuslJEclVSZPtyRtm8
@@ -16,7 +17,7 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 
 logging.basicConfig(level=logging.INFO)
 
-manager_list = ["1440788864", "1184685120"]
+manager_list = ["1184685120"]
 
 class ApplicationStatesGroup(StatesGroup):
 	age_group = State()
@@ -89,7 +90,7 @@ async def account(message: types.Message):
 	if ChatTypePrivate(message):
 		LogMessage(message)
 
-		await message.answer("Тут должен быть личный кабинет")
+		await message.answer(str(getPersonInfo(message.chat.id)))
 
 #FSM HANDLERS START
 
@@ -186,7 +187,8 @@ async def fsm_phone_number_handler(message: types.Message, state: FSMContext):
 				"class_type": data["class_type"],
 				"phone_number": message.contact.phone_number
 			}
-		
+		EstablishNewPupil(data_dictionary)
+
 	await message.reply("✅Готово, ваша заявка отправлена менеджеру, мы свяжемся с вами в ближайшее время!", reply_markup=MainMarkup())
 	await state.finish()
 
