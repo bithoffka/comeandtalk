@@ -3,15 +3,15 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 def MainMarkup():
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
 
-    signup_button = KeyboardButton("📑Записаться на занятие")
-    sched_button = KeyboardButton("⏰График работы")
-    start_button = KeyboardButton("🔄Перезапустить бота")
-    info_button = KeyboardButton("ℹ️Информация")
-    help_button = KeyboardButton("🛠Помощь")
+    start_button = KeyboardButton("🔄Перезапустить бота🔄")
+    signup_button = KeyboardButton("📑Записаться на занятие📑")
+    sched_button = KeyboardButton("🕰️График работы🕰️")
+    account_button = KeyboardButton("📰Личный кабинет📰")
+    info_button = KeyboardButton("ℹ️Информацияℹ️")
+    help_button = KeyboardButton("🛠Помощь🛠")
 
     markup.add(signup_button)
-    markup.add(sched_button)
-    markup.add(start_button)
+    markup.add(sched_button, account_button)
     markup.add(info_button, help_button)
 
     return markup
@@ -181,3 +181,5 @@ def RequestContact():
     return markup
 
 # REQUEST CONTACT END
+
+

@@ -1,11 +1,12 @@
 import logging
 from aiogram import types, Bot, Dispatcher, executor
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.dispatcher import FSMContext
 from markups import *
+from catid_generator import *
+from TID_db_manager import *
 
 token = "6509194424:AAGnHAw_eNFre4Y8KlRvIOs_PGOJbNaPg3w"
 #Test token - 6100825136:AAHwtNxu-kaHE2K2aGuslJEclVSZPtyRtm8
@@ -66,7 +67,7 @@ async def help(message: types.Message):
 	if ChatTypePrivate(message):	
 		LogMessage(message)
 
-		await message.reply("🛠Помощь🛠\n\n/start - Перезапустить бота\n/signup - Записаться на занятие в нашем центре\n/sched - Раписание работы наших центров\n/info - Информация о нашей организации\n/help - Помощь")
+		await message.reply("🛠Помощь🛠\n\n/start - Перезапустить бота\n/account - Просмотреть свой личный кабинет\n/signup - Записаться на занятие в нашем центре\n/sched - Раписание работы наших центров\n/info - Информация о нашей организации\n/help - Помощь")
 	else:
 		await message.reply("Бот не работает в группах, перейдите в приватный чат")
 
@@ -83,6 +84,13 @@ async def signup(message: types.Message):
 		await ApplicationStatesGroup.age_group.set()
 	else:
 		await message.reply("Бот не работает в группах, перейдите в приватный чат")
+
+@dp.message_handler(commands="account")
+async def account(message: types.Message):
+	if ChatTypePrivate(message):
+		LogMessage(message)
+
+		await message.answer(str(getPersonInfo(message.chat.id)))
 
 #FSM HANDLERS START
 
@@ -171,6 +179,16 @@ async def fsm_phone_number_handler(message: types.Message, state: FSMContext):
 		for i in manager_list:
 			await bot.send_message(i, f'Заявка на регистрацию!\nID: {message.chat.id}\nUsername: {message.from_user.first_name}\nВозрастная категория: {data["age_group"]}\nПрограмма: {data["direction"]}\nТип занятий: {data["class_type"]}\nКонтакт: {data["phone_number"]}')
 
+		data_dictionary = {
+				"TID": message.chat.id,
+			    "TNAME": message.from_user.first_name,
+				"age_group": data["age_group"],
+				"direction": data["direction"],
+				"class_type": data["class_type"],
+				"phone_number": message.contact.phone_number
+			}
+		EstablishNewPupil(data_dictionary)
+
 	await message.reply("Готово✅\nВаша заявка отправлена менеджеру, мы свяжемся с Вами в ближайшее время!", reply_markup=MainMarkup())
 	await state.finish()
 
@@ -191,6 +209,8 @@ async def handler(message: types.Message):
 			await info(message)
 		elif text == "🛠Помощь":
 			await help(message)
+		elif text == "📰Личный кабинет📰":
+			await account(message)
 		else:
 			LogMessage(message)
 			await message.answer("Ваша команда не распознана, напишите /help для помощи, или нажмите кнопку \"Помощь\" внизу!")
